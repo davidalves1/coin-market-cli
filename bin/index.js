@@ -14,7 +14,7 @@ const cli = meow(`
 
 `, {});
 
-const busca = cli.input.join(' ');
+const busca = cli.input.join('_').toUpperCase();
 
 if (busca.length === 0) {
 	console.log('Ops, você digitou uma moeda inválida!');
@@ -23,4 +23,13 @@ if (busca.length === 0) {
 
 const exchanges = coinTicker();
 
-console.log(exchanges);
+exchanges.map(ex => {
+  coinTicker(ex, busca)
+    .then(ticker => {
+      if (!ticker || !ticker.isObject()) {
+        return;
+      }
+
+      console.log(ticker);
+    });
+});
